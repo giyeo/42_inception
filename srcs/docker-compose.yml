@@ -1,0 +1,66 @@
+version: '3.9'
+
+services:
+  nginx:
+    container_name: nginx
+    depends_on:
+      - wordpress
+    build: ./requirements/nginx
+    ports:
+      - '443:443'
+    volumes:
+      - wordpress-data:/app/wordpress
+    restart: on-failure
+    networks:
+      - compose-bridge
+
+  wordpress:
+    container_name: wordpress
+    depends_on:
+      - mariadb
+    build: ./requirements/wordpress
+    expose:
+      - '9000'
+    volumes:
+      - wordpress-data:/app/wordpress
+    restart: on-failure
+    environment:
+      - DB_PASS=123456
+      - DB_NAME=wordpress
+      - DB_USER=wordpress
+    networks:
+      - compose-bridge
+
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    expose:
+      - '3306'
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    restart: on-failure
+    environment:
+      - DB_PASS=123456
+      - DB_NAME=wordpress
+      - DB_USER=wordpress
+    networks:
+      - compose-bridge
+
+volumes:
+  wordpress-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: '$HOME/rpaulino/data/wordpress'
+
+  mariadb-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: '$HOME/rpaulino/data/mariadb'
+
+networks:
+  compose-bridge:
+    driver: bridge
