@@ -24,10 +24,8 @@ services:
     volumes:
       - wordpress-data:/app/wordpress
     restart: on-failure
-    environment:
-      - DB_PASS=123456
-      - DB_NAME=wordpress
-      - DB_USER=wordpress
+    env_file:
+      - .env
     networks:
       - compose-bridge
 
@@ -39,10 +37,8 @@ services:
     volumes:
       - mariadb-data:/var/lib/mysql
     restart: on-failure
-    environment:
-      - DB_PASS=123456
-      - DB_NAME=wordpress
-      - DB_USER=wordpress
+    env_file:
+      - .env
     networks:
       - compose-bridge
 
@@ -52,14 +48,14 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: '$HOME/rpaulino/data/wordpress'
+      device: '$HOME/${INTRA_USER}/data/wordpress'
 
   mariadb-data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: '$HOME/rpaulino/data/mariadb'
+      device: '$HOME/${INTRA_USER}/data/mariadb'
 
 networks:
   compose-bridge:
