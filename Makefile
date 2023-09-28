@@ -1,4 +1,4 @@
-LOGIN := rpaulino
+LOGIN := rpaulino-e
 HOST_NAME := $(LOGIN).42.fr
 
 DOCKER_PATH := srcs/

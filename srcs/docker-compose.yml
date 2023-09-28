@@ -57,14 +57,14 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: '/home/user42/rpaulino/data/wordpress'
+      device: '$HOME/${INTRA_USER}/data/wordpress'
 
   mariadb-data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: '/home/user42/rpaulino/data/mariadb'
+      device: '$HOME/${INTRA_USER}/data/mariadb'
 
 networks:
   compose-bridge:
