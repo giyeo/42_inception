@@ -4,7 +4,7 @@ HOST_NAME := $(LOGIN).42.fr
 DOCKER_PATH := srcs/
 
 FOLDERS := mariadb wordpress
-VOLUME := $(addprefix $(HOME)/$(LOGIN)/data/, $(FOLDERS))
+VOLUME := $(addprefix /home/$(LOGIN)/data/, $(FOLDERS))
 
 all: | $(VOLUME)
 	@sudo chmod a+w /etc/hosts && sudo cat /etc/hosts | grep $(HOST_NAME) || \
@@ -29,7 +29,7 @@ $(VOLUME):
 	mkdir -p $(VOLUME)
 
 fclean:
-	sudo $(RM) -r $(HOME)/$(LOGIN)
+	sudo $(RM) -r /home/$(LOGIN)
 	docker-compose -f $(DOCKER_PATH)*.yml rm
 	docker volume ls -q | grep 'mariadb' | xargs docker volume rm
 	docker volume ls -q | grep 'wordpress' | xargs docker volume rm
